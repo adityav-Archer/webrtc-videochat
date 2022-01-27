@@ -1,7 +1,9 @@
-let socket = io.connect("http://localhost:3005");
+let socket = io.connect();
 let roomName = document.querySelector("#roomName");
 let videoContainer = document.querySelector("#videoContainer");
+let shareContainer = document.querySelector("#shareContainer");
 let roomInfoContainer = document.querySelector("#roomInfoContainer");
+let screenShareVideo = document.query;
 let joinBtn = document.querySelector("#joinBtn");
 let userVideo = document.querySelector("#local");
 let peerVideo = document.querySelector("#peer");
@@ -11,6 +13,7 @@ let muteBtn = document.querySelector("#muteBtn");
 let leaveBtn = document.querySelector("#leaveBtn");
 let shareBtn = document.querySelector("#shareBtn");
 let isOwner = false,
+  isScreenSharing = false,
   muteFlag = false,
   toggleCameraFlag = false,
   mySocketId,
@@ -24,7 +27,16 @@ let isOwner = false,
       height: 720,
     },
   };
-
+if (adapter.browserDetails.browser == "firefox") {
+  adapter.browserShim.shimGetDisplayMedia(window, "screen");
+}
+const shareScreenConstraints = {
+  audio: true,
+  video: {
+    width: 1280,
+    height: 720,
+  },
+};
 // Contains the stun server URL we will be using.
 const iceServers = {
   iceServers: [
@@ -39,6 +51,30 @@ const iceServers = {
     },
   ],
 };
+
+async function shareScreen(e) {
+  try {
+    const videoStream = await navigator.mediaDevices.getDisplayMedia(
+      constraints
+    );
+    console.log(videoStream);
+    handleScreenshareSuccess(videoStream);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function handleScreenshareSuccess(stream) {
+  isScreenSharing = !isScreenSharing;
+  shareBtn.textContent = isScreenSharing ? "Stop Sharing" : "Share";
+  userVideo.srcObject = stream;
+  console.log(stream);
+  stream.getVideoTracks()[0].addEventListener("ended", async () => {
+    console.log("The user has ended sharing the screen");
+    getUserMedia(true);
+    //startButton.disabled = false;
+  });
+}
 
 async function getUserMedia(isCreator) {
   try {
@@ -115,6 +151,8 @@ cameraOffBtn.addEventListener("click", (event) => {
   userStream.getTracks()[1].enabled = !toggleCameraFlag;
   toggleCameraFlag.textContent = !toggleCameraFlag ? "Camera On" : "Camera Off";
 });
+
+shareBtn.addEventListener("click", (event) => shareScreen(event));
 
 leaveBtn.addEventListener("click", (event) => {
   socket.emit("leave", room, mySocketId);

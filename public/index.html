@@ -44,7 +44,9 @@
           </button>
         </div>
       </div>
-
+      <div id="shareContainer" style="display: none">
+        <video id="share" autoplay playsinline></video>
+      </div>
       <div id="videoContainer" style="display: none">
         <video id="local" autoplay playsinline></video>
 
@@ -58,9 +60,9 @@
         <button type="button" class="btn btn-danger" id="leaveBtn">
           Leave
         </button>
-        <button type="button" class="btn btn-primary" id="shareBtn">
+        <!--button type="button" class="btn btn-primary" id="shareBtn">
           Share
-        </button>
+        </button-->
       </div>
     </div>
     <script
@@ -68,6 +70,7 @@
       integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
       crossorigin="anonymous"
     ></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="./main.js"></script>
   </body>
 </html>

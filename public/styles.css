@@ -4,7 +4,7 @@
   margin: 10px 0 0 57px;
 }
 
-video {
+#videoContainer > video {
   width: 30%;
 }
 
