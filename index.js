@@ -1,9 +1,13 @@
 const express = require("express");
 const socket = require("socket.io");
 const app = express();
+const path = require("path");
 const PORT = 80;
 app.use(express.static("public"));
 
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(path.join(__dirname + "/public/index.html")));
+});
 let appServer = app.listen(PORT, () =>
   console.log(`Server started successfully on ${PORT}`)
 );
