@@ -170,7 +170,6 @@ leaveBtn.addEventListener("click", (event) => {
       item.srcObject.getTracks().forEach((track) => track.stop());
     }
   });
-
   //Checks if there is peer on the other side and safely closes the existing connection established with the peer.
   Object.keys(rtcPeerConnection).forEach((key) => clearRTCConnections(key));
   /*if (rtcPeerConnection) {
@@ -300,7 +299,8 @@ socket.on("answer", (answer, fromId, toId) => {
 
 socket.on("leave", (fromId) => {
   isOwner = true;
-
+  if (fromId === mySocketId) return;
+  console.log("From Id:", fromId);
   if (rtcPeerConnection[fromId]) {
     rtcPeerConnection[fromId].ontrack = null;
     rtcPeerConnection[fromId].onicecandidate = null;
@@ -308,8 +308,10 @@ socket.on("leave", (fromId) => {
     delete rtcPeerConnection[fromId];
   }
 
-  let videoId = `remote_video_${this.fromId}`;
+  let videoId = `remote_video_${fromId}`;
+  console.log(videoId);
   let remoteVideoElement = document.getElementById(videoId);
+
   remoteVideoElement.srcObject.getTracks().forEach((track) => track.stop());
   remoteVideoElement.remove();
 });
