@@ -11,7 +11,7 @@ let optionsContainer = document.querySelector("#roomOptionsContainer");
 let cameraOffBtn = document.querySelector("#cameraOffBtn");
 let muteBtn = document.querySelector("#muteBtn");
 let leaveBtn = document.querySelector("#leaveBtn");
-let shareBtn = document.querySelector("#shareBtn");
+//let shareBtn = document.querySelector("#shareBtn");
 let isOwner = false,
   isScreenSharing = false,
   muteFlag = false,
@@ -152,7 +152,7 @@ cameraOffBtn.addEventListener("click", (event) => {
   toggleCameraFlag.textContent = !toggleCameraFlag ? "Camera On" : "Camera Off";
 });
 
-shareBtn.addEventListener("click", (event) => shareScreen(event));
+//shareBtn.addEventListener("click", (event) => shareScreen(event));
 
 leaveBtn.addEventListener("click", (event) => {
   socket.emit("leave", room, mySocketId);
