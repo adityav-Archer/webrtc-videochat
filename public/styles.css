@@ -1,0 +1,14 @@
+#videoContainer {
+  display: grid;
+  grid-template-columns: auto;
+  margin: 10px 0 0 57px;
+}
+
+video {
+  width: 30%;
+}
+
+#roomOptionsContainer {
+  display: none;
+  text-align: center;
+}
